@@ -1,13 +1,30 @@
+clear
+clc
 %This version contains the completed functions of analysing worm behavior
-%parameter.
+%for Rongkang desktop-3070
+addpath (genpath ('G:\Data\WenLab\Worm_Embed\libwen') )
+pathname='G:\Data\WenLab\Worm_Embed\rawdata'; %the rawdata's path
 
-pathname = uigetdir;
-cd(pathname);
-yamlfiles = dir('*.yaml');
-start_yaml = input('Start # of yaml file\n');
-if isempty(start_yaml)
+%for Rongkang Laptap
+%pathename='G:\Data\WenLab\Worm_Embed';
+
+%for the server-2080Ti
+%pathname='/home/ /Worm_Embed/rawdata/
+
+%you can also comment out the code above to use below to change your rawdata folder
+% pathname = uigetdir;
+
+%for server
+%pathname=[pathename,'/rawdata'];
+%for desktop
+
+%cd(pathname);
+yamlfiles = dir(fullfile(pathname,'*.yaml'));  % get all the *.yaml file's info:name folder
+start_yaml = input('From which file start # of *.yaml file:'); %you can input the star file number
+if isempty(start_yaml)  %if the input is empty then start from the first file
     start_yaml = 1;
 end
+
 for s_yaml = start_yaml:length(yamlfiles)
     alreadyexistflag = 0;
     filename = yamlfiles(s_yaml).name;
@@ -24,42 +41,42 @@ for s_yaml = start_yaml:length(yamlfiles)
             shortname = [shortname,nameaddition];
             break
         end
-    end  
+    end
     for i = 1:length(matfiles)
         if strcmp(shortname,matfiles(i).name(1:end-4))
             alreadyexistflag = 1;
             break
         end
-    end 
+    end
     if alreadyexistflag == 1
         continue
     end
     close all;
-
-
-     wormname = shortname;
-     frames_beforeDLPon = 350;
-     disp('starting frame number before DLPon: ');
-     disp(frames_beforeDLPon);
-
-     fprintf('\n%s\n',filename);
-
+    
+    
+    wormname = shortname;
+    frames_beforeDLPon = 350;
+    disp('starting frame number before DLPon: ');
+    disp(frames_beforeDLPon);
+    
+    fprintf('\n%s\n',filename);
+    
     mcd=Mcd_Frame;
     mcd=mcd.yaml2matlab(fname);
-
+    
     fprintf('\n%s\n',filename);
     % Extrect the DLPon frames of this worm's experiment.
     numframes_total=size(mcd);
     numframes_total=numframes_total(2);
-
-    j=1; 
+    
+    j=1;
     t_w_illu_time=zeros(1,6);
     for i=1:numframes_total-1
-         if ~mcd(i).DLPisOn && mcd(i+1).DLPisOn
+        if ~mcd(i).DLPisOn && mcd(i+1).DLPisOn
             origin_y=mcd(i).IllumRectOrigin(2);
             radius_y=mcd(i).IllumRectRadius(2);
             if origin_y-radius_y<0
-                 initiation=0;
+                initiation=0;
             else
                 initiation=origin_y-radius_y;
             end
@@ -72,10 +89,10 @@ for s_yaml = start_yaml:length(yamlfiles)
                 else
                     t_w_illu_time(j,5)=i-mod(i,100)-2*100;
                 end
-            else 
+            else
                 t_w_illu_time(j,5)=i;
             end
-         end
+        end
         if mcd(i).DLPisOn && ~mcd(i+1).DLPisOn
             t_w_illu_time(j,2)=i;
             if i<numframes_total-300
@@ -88,9 +105,9 @@ for s_yaml = start_yaml:length(yamlfiles)
                 t_w_illu_time(j,6)=i;
             end
             j=j+1;
-        end  
+        end
     end
-
+    
     illu_status=1;
     cyclenum=0;
     for cycle=1:size(t_w_illu_time)
@@ -105,8 +122,8 @@ for s_yaml = start_yaml:length(yamlfiles)
         end
     end
     time_auto=cell(illu_times,1);
-
-    for cycle=1:cyclenum 
+    
+    for cycle=1:cyclenum
         close all
         clear amp curdata curvdatafilterd angle_data
         if t_w_illu_time(cycle,1)<=frames_beforeDLPon
@@ -114,63 +131,63 @@ for s_yaml = start_yaml:length(yamlfiles)
         else
             istart = t_w_illu_time(cycle,1)-frames_beforeDLPon;
         end
-
+        
         iend = t_w_illu_time(cycle,2)+50;
-
+        
         spline_p = 0.0005;
         flip = 0;
-
+        
         numframes=iend-istart+1;
-
+        
         numcurvpts=100;
-
+        
         proximity = 50;
-
+        
         curvdata=zeros(numframes,numcurvpts);
         angle_data = zeros(numframes,numcurvpts+1);
         Head_position=mcd(istart).Head;
         Tail_position=mcd(istart).Tail;
-
+        
         worm_length=0;  %body length in terms of pixels
-
+        
         t1=0;
-
+        
         j1=0; j2=0;
-
+        
         Centerline=zeros(numframes,100,2);
         time_auto{cycle,1}=zeros(numframes,1);
         %Display the target regoin in the screen
-
+        
         for j=1:numframes
             i = istart + (j - 1);
             if ~mcd(i-1).DLPisOn && mcd(i).DLPisOn
                 origin_y=mcd(i).IllumRectOrigin(2);
                 radius_y=mcd(i).IllumRectRadius(2);
-            if origin_y-radius_y<0
-                initiation=0;
-            else
-                initiation=origin_y-radius_y;
-            end
+                if origin_y-radius_y<0
+                    initiation=0;
+                else
+                    initiation=origin_y-radius_y;
+                end
                 fprintf('\n ************************** \n the target region is [%d,%d].\n **************************\n',initiation,origin_y+radius_y);
                 DLPon_frame=i;
             elseif mcd(i-1).DLPisOn && ~mcd(i).DLPisOn
                 origin_y=mcd(i).IllumRectOrigin(2);
                 radius_y=mcd(i).IllumRectRadius(2);
-            if origin_y-radius_y<0
-                initiation=0;
-            else
-                initiation=origin_y-radius_y;
-            end
+                if origin_y-radius_y<0
+                    initiation=0;
+                else
+                    initiation=origin_y-radius_y;
+                end
                 fprintf(' ************************** \n the target region is [%d,%d].\n **************************\n',initiation,origin_y+radius_y);
                 DLPoff_frame=i;
                 break;
             end
         end
-
+        
         for j=1:numframes
-
+            
             i = istart + (j - 1);
-
+            
             if (norm(mcd(i).Head-Head_position)> norm(mcd(i).Tail-Head_position)) %%head and tail flips
                 if norm(mcd(i).Head-Tail_position)<=proximity && norm(mcd(i).Tail-Head_position)<=proximity  %%if the tip points are identified
                     flip=1;
@@ -184,28 +201,28 @@ for s_yaml = start_yaml:length(yamlfiles)
                 Head_position = mcd(i).Head;
                 Tail_position = mcd(i).Tail;
             end
-
-
+            
+            
             %if  norm(mcd2(i).Head-Head_position)<=proximity && norm(mcd2(i).Tail-Tail_position)<=proximity
             if norm(mcd(i).Head-mcd(i).Tail)>proximity
-                 centerline=reshape(mcd(i).SegmentedCenterline,2,[]);
-                 %Head_position=mcd2(i).Head;
-                 %Tail_position=mcd2(i).Tail;
+                centerline=reshape(mcd(i).SegmentedCenterline,2,[]);
+                %Head_position=mcd2(i).Head;
+                %Tail_position=mcd2(i).Tail;
                 if flip
                     centerline(1,:)=centerline(1,end:-1:1);
                     centerline(2,:)=centerline(2,end:-1:1);
                 end
             end
-
-
+            
+            
             Centerline(j,:,1)=centerline(1,:);
             Centerline(j,:,2)=centerline(2,:);
-
-
-
-
+            
+            
+            
+            
             time_auto{cycle,1}(j,1)=mcd(i).TimeElapsed;
-
+            
             if mcd(i).DLPisOn && ~mcd(i-1).DLPisOn
                 t1=time_auto{cycle,1}(j,1);%DLPon timepoint
                 w1=t1;
@@ -213,48 +230,48 @@ for s_yaml = start_yaml:length(yamlfiles)
                 %origin=100-mcd(i).IllumRectOrigin(2);
                 %radius=mcd(i).IllumRectRadius(2);
             end
-
+            
             if ~mcd(i).DLPisOn && mcd(i-1).DLPisOn
                 t2=time_auto{cycle,1}(j,1);%DLPoff timepoint
                 w2=t2;
                 j2=j;%DLPoff frame
             end
-
-            df = diff(centerline,1,2); 
-            t = cumsum([0, sqrt([1 1]*(df.*df))]); 
+            
+            df = diff(centerline,1,2);
+            t = cumsum([0, sqrt([1 1]*(df.*df))]);
             worm_length=worm_length+t(end);
             cv = csaps(t,centerline,spline_p);%smooth the curvature
             cv2 =  fnval(cv, t)';
             df2 = diff(cv2,1,1); df2p = df2';
-
+            
             splen = cumsum([0, sqrt([1 1]*(df2p.*df2p))]);
             cv2i = interp1(splen+.00001*(0:length(splen)-1),cv2, (0:(splen(end)-1)/(numcurvpts+1):(splen(end)-1)));
-
+            
             df2 = diff(cv2i,1,1);
             atdf2 =  unwrap(atan2(-df2(:,2), df2(:,1)));
             angle_data(j,:) = atdf2';
-
-            curv = unwrap(diff(atdf2,1)); 
+            
+            curv = unwrap(diff(atdf2,1));
             curvdata(j,:) = curv';
-
-
-
+            
+            
+            
         end
         vedio_sequence=cycle;
         vedio_sequence_s=num2str(vedio_sequence);
         vedio_sequence_s=strcat(wormname,'_',vedio_sequence_s);
-
+        
         origin=10;
         radius=8;
-
+        
         worm_length=worm_length/numframes;
-
+        
         %answer = inputdlg({'time filter', 'body coord filter', 'mean=0, median=1'}, '', 1, {num2str(5), num2str(10), '0'});
         timefilter =5;
         bodyfilter =10;
-
-
-
+        
+        
+        
         h = fspecial('average', [timefilter bodyfilter]);
         curvdatafiltered = imfilter(curvdata*100,  h , 'replicate');
         h1=figure('visible','off');
@@ -269,7 +286,7 @@ for s_yaml = start_yaml:length(yamlfiles)
         end
         origin_y=mcd(istart+j1).IllumRectOrigin(2);
         radius_y=mcd(istart+j1).IllumRectRadius(2);
-
+        
         if origin_y<=10
             segname=' head';
         elseif origin_y>10 && origin_y<=20
@@ -282,15 +299,15 @@ for s_yaml = start_yaml:length(yamlfiles)
             segname=' various';
         end
         %segname=' head';
-        hold on; 
+        hold on;
         if illu_status
             if j1
-               plot([initiation,initiation,origin_y+radius_y,origin_y+radius_y,initiation],[j1,j2,j2,j1,j1] ,'color',[0.5 0.5 0.5],'linewidth',2);
+                plot([initiation,initiation,origin_y+radius_y,origin_y+radius_y,initiation],[j1,j2,j2,j1,j1] ,'color',[0.5 0.5 0.5],'linewidth',2);
             end
         end
         title('cuvature diagram');
         set(gca,'XTICK',[1 20 40 60 80 100]);
-        set(gca,'XTICKLABEL',[0 0.2 0.4 0.6 0.8 1]);    
+        set(gca,'XTICKLABEL',[0 0.2 0.4 0.6 0.8 1]);
         time_auto{cycle,1}=time_auto{cycle,1}-t1;
         %set(gca,'YTICK',1:2*fps:numframes);
         %y_tick=get(gca,'YTICK');
@@ -299,65 +316,65 @@ for s_yaml = start_yaml:length(yamlfiles)
         set(gca,'YTICKLABEL',istart:50:iend);
         xlabel('fractional distance along the centerline (head=0; tail=1)');
         ylabel('time (s)');
-
+        
         saveas(h1,strcat(vedio_sequence_s,segname,' cur'),'fig')
         saveas(h1,strcat(vedio_sequence_s,segname,' cur'),'jpg')
-
+        
         head_curv=zeros(numframes,1);
         medial_curv=zeros(numframes,1);
         tail_curv=zeros(numframes,1);
-
-
+        
+        
         %answer = inputdlg({'origin', 'radius'}, '', 1, {num2str(origin), num2str(radius)});
         %origin = str2double(answer{1});
         %radius = str2double(answer{2});
-
+        
         origin=10;
         radius=8;
-
+        
         for j=1:numframes
             head_curv(j)=mean(curvdatafiltered(j,origin-radius:origin+radius));
         end
         origin=50;
         radius=10;
-
+        
         for j=1:numframes
             medial_curv(j)=mean(curvdatafiltered(j,origin-radius:origin+radius));
         end
-
+        
         origin=80;
         radius=10;
-
+        
         for j=1:numframes
             tail_curv(j)=mean(curvdatafiltered(j,origin-radius:origin+2*radius));
         end
-
+        
         segmented_curv=zeros(numframes,5);
-
+        
         if j1~=0
-
+            
             if j2~=0
                 frames=length(j1:j2);
-
+                
                 %disp([std(head_curv(max(1,j1-frames):j1)), std(head_curv(j1:j2)),std(head_curv(j2:min(j2+frames,iend-istart+1))),std(head_curv(j2+frames:min(j2+2*frames,iend-istart+1))),std(head_curv(j2:min(j2+2*frames,iend-istart+1)))]);
-
+                
                 disp('head curvature before illu')
                 disp(std(head_curv(max(1,j1-3*frames):max(1,j1-2*frames))));
-
+                
                 disp(std(head_curv(max(1,j1-2*frames):max(1,j1-frames))));
-
+                
                 disp(std(head_curv(max(1,j1-frames):j1)));
                 disp('medail curvature before illu')
                 disp(std(medial_curv(max(1,j1-3*frames):max(1,j1-2*frames))));
-
+                
                 disp(std(medial_curv(max(1,j1-2*frames):max(1,j1-frames))));
-
+                
                 disp(std(medial_curv(max(1,j1-frames):j1)));
                 disp('tail curvature before illu')
                 disp(std(tail_curv(max(1,j1-3*frames):max(1,j1-2*frames))));
-
+                
                 disp(std(tail_curv(max(1,j1-2*frames):max(1,j1-frames))));
-
+                
                 disp(std(tail_curv(max(1,j1-frames):j1)));
                 disp('head curvature during illu');
                 disp(std(head_curv(j1:j2)));
@@ -371,27 +388,27 @@ for s_yaml = start_yaml:length(yamlfiles)
                 disp(std(medial_curv(j2:min(j2+frames,iend-istart+1))));
                 disp('tail curvature after illu');
                 disp(std(tail_curv(j2:min(j2+frames,iend-istart+1))));
-
-
-
+                
+                
+                
                 disp('start frame and end frame');
-
+                
                 disp([istart iend]);
-
+                
             else
-
+                
                 N=length(head_curv);
                 frames=N-j1+1;
                 disp([std(head_curv(max(1,j1-frames):j1)), std(head_curv(j1:end))]);
                 disp([istart iend]);
             end
-
-        else 
+            
+        else
             disp(std(head_curv));
             disp([istart iend]);
         end
-
-
+        
+        
         body_amp1=zeros(1,100);
         body_amp2=zeros(1,100);
         body_amp3=zeros(1,100);
@@ -410,7 +427,7 @@ for s_yaml = start_yaml:length(yamlfiles)
                     body_amp1(1,bodyseg)=std(curvdatafiltered(1:j1-1,bodyseg))*2;
                     body_amp2(1,bodyseg)=std(curvdatafiltered(j1:j2,bodyseg))*2;
                     body_amp3(1,bodyseg)=std(curvdatafiltered(j2+1:end,bodyseg))*2;
-                else 
+                else
                     break
                 end
             end
@@ -448,14 +465,14 @@ for s_yaml = start_yaml:length(yamlfiles)
             case ' tail'
                 amp_tail{vedio_sequence,1}=body_amp;
         end
-
-        %worm_data=struct('Start_frame',istart,'End_frame',iend,'Time',time,'Worm_curvature',curvdatafiltered,'center_of_illu',origin,'radius_of_illu',radius,'mean_curvature',mean_curv,'Video_name',vid); 
+        
+        %worm_data=struct('Start_frame',istart,'End_frame',iend,'Time',time,'Worm_curvature',curvdatafiltered,'center_of_illu',origin,'radius_of_illu',radius,'mean_curvature',mean_curv,'Video_name',vid);
         t_w_curvdatafiltered{vedio_sequence,1}=curvdatafiltered;
         t_w_curdata{vedio_sequence,1}=curvdata;
         t_w_amp{vedio_sequence,1}=body_amp;
-
+        
         clear j1 j2
-
+        
     end
     clear_uwanted_var;
     evalc([wormname,'_amp=t_w_amp']);
