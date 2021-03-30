@@ -2,7 +2,7 @@ clear
 clc
 %This version contains the completed functions of analysing worm behavior
 %for Rongkang desktop-3070
-addpath(genpath('G:\Data\WenLab\Worm_Embed\libwen'))
+addpath(genpath('G:\Data\WenLab\Worm_Embed\libwen')) 
 pathname='G:\Data\WenLab\Worm_Embed\rawdata'; %the rawdata's path
 
 %for Rongkang Laptap
