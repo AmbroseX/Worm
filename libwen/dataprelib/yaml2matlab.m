@@ -8,7 +8,7 @@ function mcdf=yaml2matlab(file)
 % 2 November 2010
 
 
-fid = fopen(file);
+fid = fopen(file); 
 
 Mcd_Frame.seekToFirstFrame(fid);
 k=1;
@@ -20,3 +20,4 @@ while(~feof(fid))
     end
 end
 fclose(fid);
+

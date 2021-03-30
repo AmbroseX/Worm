@@ -31,11 +31,11 @@ while ~isEndOfFrame(tline)
             case 'Tail'
                 [mcdf.Tail tline]=getxy(fid,tline);
             case 'BoundaryA'
-                [mcdf.BoundaryA tline]=getCVseq(fid,tline);
+                [mcdf.BoundaryA tline]=getCVseq(fid,tline); 
             case 'BoundaryB'
                 [mcdf.BoundaryB tline]=getCVseq(fid,tline);
             case 'SegmentedCenterline'
-                [mcdf.SegmentedCenterline tline]=getCVseq(fid,tline);
+                [mcdf.SegmentedCenterline tline]=getCVseq(fid,tline); 
             case 'DLPIsOn'
                 [mcdf.DLPisOn tline]=getVal(fid,tline);
             case 'FloodLightIsOn'
@@ -49,7 +49,7 @@ while ~isEndOfFrame(tline)
             case 'IllumRectRadius'
                 [mcdf.IllumRectRadius tline]=getxy(fid,tline);
             case 'StageVelocity'
-                [mcdf.StageVelocity tline]=getij(fid,tline);
+                [mcdf.StageVelocity tline]=getij(fid,tline);     
             case 'ProtocolIsOn'
                 [mcdf.ProtocolIsOn tline]=getVal(fid,tline);
             case 'ProtocolStep'
@@ -57,17 +57,17 @@ while ~isEndOfFrame(tline)
             case 'HeadCurv'
                 [mcdf.HeadCurv tline]=getVal(fid,tline);
             case 'HeadCurvDeriv'
-                [mcdf.HeadCurvDeriv tline]=getVal(fid,tline);
+                [mcdf.HeadCurvDeriv tline]=getVal(fid,tline); 
             case 'StagePosition'
                 [mcdf.StagePosition tline]=getij(fid,tline);
             case'StageFeedbackTarget'
                 [mcdf.StageFeedbackTarget tline]=getij(fid,tline);
-                %            case 'LaserPower'
-                %               [mcdf.GreenLaser mcdf.BlueLaser tline]=getLaserPower(fid,tline);
+%            case 'LaserPower'
+ %               [mcdf.GreenLaser mcdf.BlueLaser tline]=getLaserPower(fid,tline);
             otherwise
                 %disp(['fname matched nothing: ',fname])
                 tline=fgets(fid);
-        end
+       end
         
         
         
@@ -89,8 +89,8 @@ function ret=isEndOfFrame(tline)
 ret=0;
 if ~ischar(tline)
     ret=1;
-else
-    
+else 
+
     if regexp(tline,'^[ \t\r\n\v\f]*-[ \t\r\n\v\f]*$')
         ret=1;
     end
