@@ -475,7 +475,7 @@ for s_yaml = start_yaml:length(yamlfiles)
         clear j1 j2
         
     end
-    clear_uwanted_var;
+    %clear_uwanted_var;
     evalc([wormname,'_amp=t_w_amp']);
     evalc([wormname,'_curdata=t_w_curdata']);
     evalc([wormname,'_curvdatafiltered=t_w_curvdatafiltered']);
