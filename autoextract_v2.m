@@ -1,13 +1,11 @@
 clear
 clc
+tic
 %This version contains the completed functions of analysing worm behavior
-%for Rongkang desktop-3070
+%for Rongkang desktop-3070  & Laptap
 addpath(genpath('G:\Data\WenLab\Worm_Embed\libwen'))
-%addpath('G:\Data\WenLab\Worm_Embed\libwen\dataprelib')
+%addpath('G:\Data\WenLab\Worm_Embed\libwen\@Mcd_Frame')
 pathname='G:\Data\WenLab\Worm_Embed\rawdata'; %the rawdata's path
-
-%for Rongkang Laptap
-%pathename='G:\Data\WenLab\Worm_Embed';
 
 %for the server-2080Ti
 %pathname='/home/ /Worm_Embed/rawdata/
@@ -487,3 +485,4 @@ for s_yaml = start_yaml:length(yamlfiles)
     nisi;
     clearvars -except pathname yamlfiles
 end
+toc
