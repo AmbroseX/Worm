@@ -1,1 +1,0 @@
-clearex('cmap','fname','filename','filename_simplicity','mcd','t_w*','time_auto','wormname','pathname','yamlfiles','start_yaml','s_yaml');

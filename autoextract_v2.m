@@ -5,6 +5,9 @@ tic
 %for Rongkang desktop-3070  & Laptap
 addpath(genpath('G:\Data\WenLab\Worm_Embed\libwen'))
 pathname='G:\Data\WenLab\Worm_Embed\rawdata'; %the rawdata's path
+% for the class,you should put all the class function under the same folder
+% and then name the folder with @ before your class function
+
 
 %for the server-2080Ti
 %addpath(genpath('/home/wenlab/xrk/Worm_Embed/libwen'))
