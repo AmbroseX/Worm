@@ -4,7 +4,6 @@ tic
 %This version contains the completed functions of analysing worm behavior
 %for Rongkang desktop-3070  & Laptap
 addpath(genpath('G:\Data\WenLab\Worm_Embed\libwen'))
-%addpath('G:\Data\WenLab\Worm_Embed\libwen\@Mcd_Frame')
 pathname='G:\Data\WenLab\Worm_Embed\rawdata'; %the rawdata's path
 
 %for the server-2080Ti
