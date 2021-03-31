@@ -7,7 +7,8 @@ addpath(genpath('G:\Data\WenLab\Worm_Embed\libwen'))
 pathname='G:\Data\WenLab\Worm_Embed\rawdata'; %the rawdata's path
 
 %for the server-2080Ti
-%pathname='/home/ /Worm_Embed/rawdata/
+%addpath(genpath('/home/wenlab/xrk/Worm_Embed/libwen'))
+%pathname='/home/wenlab/xrk/Worm_Embed/rawdata'
 
 %you can also comment out the code above to use below to change your rawdata folder
 % pathname = uigetdir;
