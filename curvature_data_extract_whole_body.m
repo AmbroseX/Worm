@@ -1,35 +1,35 @@
+pathname=fullfile('G:','Data','WenLab','Worm_Embed','rawdata');
 addpath(pwd);
 close all;
 
 if exist('pathname', 'var')
-        try
-            if isdir(pathname)
+    try
+        if isdir(pathname)
             cd(pathname);
-            end
         end
- end
- [filename,pathname]  = uigetfile({'*.yaml'});  
-  fname = [pathname filename];
- 
- if ~exist('mcd','var')
-     mcd=Mcd_Frame;
-     mcd=mcd.yaml2matlab(fname);
-     
- end
+    end
+end
+[filename,pathname]  = uigetfile({'*.yaml'});
+fname = [pathname filename];
+
+if ~exist('mcd','var')
+    mcd=Mcd_Frame;
+    mcd=mcd.yaml2matlab(fname);
+end
 fprintf('\n%s\n',filename);
 
 
 if exist('istart', 'var')
-        answer = inputdlg({'Start frame', 'End frame', 'spline fit parameter','flip head and tail?'}, 'Cancel to clear previous', 1, ...
-            {num2str(istart),num2str(iend),num2str(spline_p),num2str(flip)});
-    else
-        answer = inputdlg({'Start frame', 'End frame','spline fit parameter','flip head and tail?'}, '', 1);
+    answer = inputdlg({'Start frame', 'End frame', 'spline fit parameter','flip head and tail?'}, 'Cancel to clear previous', 1, ...
+        {num2str(istart),num2str(iend),num2str(spline_p),num2str(flip)});
+else
+    answer = inputdlg({'Start frame', 'End frame','spline fit parameter','flip head and tail?'}, '', 1);
 end
-    
+
 if isempty(answer)
     answer = inputdlg({'Start frame', 'End frame','spline fit parameter','flip head and tail?'}, '', 1);
 end
-    
+
 istart = str2num(answer{1});
 iend = str2num(answer{2});
 spline_p = str2num(answer{3});
@@ -75,31 +75,31 @@ for j=1:numframes
         Head_position = mcd(i).Head;
         Tail_position = mcd(i).Tail;
     end
-   
+    
     
     %if  norm(mcd2(i).Head-Head_position)<=proximity && norm(mcd2(i).Tail-Tail_position)<=proximity
     if norm(mcd(i).Head-mcd(i).Tail)>proximity
-         centerline=reshape(mcd(i).SegmentedCenterline,2,[]);
-         %Head_position=mcd2(i).Head;
-         %Tail_position=mcd2(i).Tail;
+        centerline=reshape(mcd(i).SegmentedCenterline,2,[]);
+        %Head_position=mcd2(i).Head;
+        %Tail_position=mcd2(i).Tail;
         if flip
             centerline(1,:)=centerline(1,end:-1:1);
             centerline(2,:)=centerline(2,end:-1:1);
         end
     end
-        
+    
     
     Centerline(j,:,1)=centerline(1,:);%x axis
     Centerline(j,:,2)=centerline(2,:);%y axis
-   
     
-
+    
+    
     
     time(j)=mcd(i).TimeElapsed;
     
     if mcd(i).DLPisOn && ~mcd(i-1).DLPisOn
         t1=time(j);
-		w1=t1;
+        w1=t1;
         j1=j;
         %origin=100-mcd(i).IllumRectOrigin(2);
         %radius=mcd(i).IllumRectRadius(2);
@@ -108,7 +108,7 @@ for j=1:numframes
     if ~mcd(i).DLPisOn && mcd(i-1).DLPisOn
         t2=time(j);
         w2=t2;
-		j2=j;
+        j2=j;
     end
     
     
@@ -117,21 +117,21 @@ for j=1:numframes
     %plot(centerline(1,:),centerline(2,:),'k-');
     %hold on; plot(Head_position(1),Head_position(2),'ro');
     %hold on; plot(Tail_position(1),Tail_position(2),'bo');
-	
+    
     %axis off; axis equal; hold on;
-    df = diff(centerline,1,2); 
-    t = cumsum([0, sqrt([1 1]*(df.*df))]); 
+    df = diff(centerline,1,2);
+    t = cumsum([0, sqrt([1 1]*(df.*df))]);
     %sqrt([1 1]*(df.*df)) is the length of each single segment of the arc
     %so t is the length of the whole arc
     worm_length=worm_length+t(end);
     cv = csaps(t,centerline,spline_p);
     
     %figure(1);
-    %fnplt(cv, '-g'); hold off;   
+    %fnplt(cv, '-g'); hold off;
     
     cv2 =  fnval(cv, t)';
     df2 = diff(cv2,1,1); df2p = df2';
-
+    
     splen = cumsum([0, sqrt([1 1]*(df2p.*df2p))]);
     cv2i = interp1(splen+.00001*[0:length(splen)-1],cv2, [0:(splen(end)-1)/(numcurvpts+1):(splen(end)-1)]);
     
@@ -141,12 +141,12 @@ for j=1:numframes
     %angle of attack.
     atdf2 =  unwrap(atan2(-df2(:,2), df2(:,1)));
     angle_data(j,:) = atdf2';
-        
-    curv = unwrap(diff(atdf2,1)); 
+    
+    curv = unwrap(diff(atdf2,1));
     curvdata(j,:) = curv';
-	
-	
-	
+    
+    
+    
 end
 
 cmap=redgreencmap;
@@ -167,7 +167,7 @@ h = fspecial('average', [timefilter bodyfilter]);
 curvdatafiltered = imfilter(curvdata*100,  h , 'replicate');
 figure; imagesc(curvdatafiltered(:,:)); colormap(cmap); colorbar; caxis([-10 10]);
 
- 
+
 hold on; plot([origin-2*radius,origin+worm_length],[j1,j1],'c-');
 hold on; plot([origin-2*radius,origin+worm_length],[j2,j2],'c-');
 
@@ -231,12 +231,12 @@ if j1~=0
     
     if j2~=0
         frames=length(j1:j2);
-
+        
         %disp([std(head_curv(max(1,j1-frames):j1)), std(head_curv(j1:j2)),std(head_curv(j2:min(j2+frames,iend-istart+1))),std(head_curv(j2+frames:min(j2+2*frames,iend-istart+1))),std(head_curv(j2:min(j2+2*frames,iend-istart+1)))]);
         
         disp('head curvature before illumination')
         disp(std(head_curv(max(1,j1-3*frames):max(1,j1-2*frames))));
-		
+        
         disp(std(head_curv(max(1,j1-2*frames):max(1,j1-frames))));
         
         disp(std(head_curv(max(1,j1-frames):j1)));
@@ -248,12 +248,12 @@ if j1~=0
         disp(std(head_curv(j2+frames:min(j2+2*frames,iend-istart+1))));
         disp(std(head_curv(j2+2*frames:min(j2+3*frames,iend-istart+1))));
         disp(std(head_curv(j2+3*frames:min(j2+4*frames,iend-istart+1))));
-       
-		
+        
+        
         disp('start frame and end frame');
         
         disp([istart iend]);
-    
+        
     else
         
         N=length(head_curv);
@@ -262,14 +262,14 @@ if j1~=0
         disp([istart iend]);
     end
     
-else 
+else
     disp(std(head_curv));
     disp([istart iend]);
 end
 
 wormname=erase(filename,'.yaml');
 
-worm_data=struct('Start_frame',istart,'End_frame',iend,'Time',time,strcat('angele_data_',wormname),angle_data,'Worm_curvature',curvdatafiltered,'center_of_illumination',origin,'radius_of_illumination',radius); 
+worm_data=struct('Start_frame',istart,'End_frame',iend,'Time',time,strcat('angele_data_',wormname),angle_data,'Worm_curvature',curvdatafiltered,'center_of_illumination',origin,'radius_of_illumination',radius);
 
 
 
