@@ -1,21 +1,9 @@
 %to get the angle_data and curve_data one by one
 
 addpath(genpath(fullfile('G:','Data','WenLab','Worm_Embed','libwen')));
-pathname=fullfile('G:','Data','WenLab','Worm_Embed','rawdata');
+pathname=fullfile('G:','Data','WenLab','Worm_Embed','rawdata','test');
 close all;
 
-%to test if the pathname existed in the workspace var.
-if exist('pathname', 'var')
-    try
-        if isfolder(pathname)
-            cd(pathname);
-        end
-    end
-end
-
-
-[filename,pathname]  = uigetfile({'*.yaml'});
-fname = [pathname filename];
 
 if ~exist('mcd','var')
     mcd=Mcd_Frame;

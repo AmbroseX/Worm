@@ -3,25 +3,14 @@ clc
 tic
 %This version contains the completed functions of analysing worm behavior
 %for Rongkang desktop-3070  & Laptap
-addpath(genpath('G:\Data\WenLab\Worm_Embed\libwen'))
-pathname='G:\Data\WenLab\Worm_Embed\rawdata'; %the rawdata's path
-% for the class,you should put all the class function under the same folder
-% and then name the folder with @ before your class function
+workpath=fullfile('G:','Data','WenLab','Worm_Embed');
+addpath(genpath(fullfile(workpath,'libwen')));
+filepath='test';
+
+pathname=fullfile(workpath,'rawdata',filepath); %the rawdata's path
+yamlfiles = dir(fullfile(pathname,'*.yaml'));
 
 
-%for the server-2080Ti
-%addpath(genpath('/home/wenlab/xrk/Worm_Embed/libwen'))
-%pathname='/home/wenlab/xrk/Worm_Embed/rawdata'
-
-%you can also comment out the code above to use below to change your rawdata folder
-% pathname = uigetdir;
-
-%for server
-%pathname=[pathename,'/rawdata'];
-%for desktop
-
-%cd(pathname);
-yamlfiles = dir(fullfile(pathname,'*.yaml'));  % get all the *.yaml file's info:name folder
 start_yaml = input('From which file start # of *.yaml file:'); %you can input the star file number
 if isempty(start_yaml)  %if the input is empty then start from the first file
     start_yaml = 1;
@@ -30,7 +19,7 @@ end
 for s_yaml = start_yaml:length(yamlfiles)
     alreadyexistflag = 0;
     filename = yamlfiles(s_yaml).name;
-    fname = [pathname,'\',filename];
+    fname = [pathname,'\',filename];  %the fule path of the yamal
     namepattern = 'w\d*\w*\.yaml';
     timepattern = '\d*_\d\d\d\d_';
     shortname = regexp(filename,namepattern,'match');
@@ -54,61 +43,16 @@ for s_yaml = start_yaml:length(yamlfiles)
         continue
     end
     close all;
-
     wormname = shortname;
-    frames_beforeDLPon = 350;
-    disp('starting frame number before DLPon: ');
-    disp(frames_beforeDLPon);
-    
+    frames_beforeDLPon = 350;   %%starting frame number before DLPon
     fprintf('\n%s\n',filename);
     
     mcd=Mcd_Frame;
     mcd=mcd.yaml2matlab(fname);
     
     fprintf('\n%s\n',filename);
+    
     % Extrect the DLPon frames of this worm's experiment.
-    numframes_total=size(mcd);
-    numframes_total=numframes_total(2);
-    
-    j=1;
-    t_w_illu_time=zeros(1,6);
-    for i=1:numframes_total-1
-        if ~mcd(i).DLPisOn && mcd(i+1).DLPisOn
-            origin_y=mcd(i).IllumRectOrigin(2);
-            radius_y=mcd(i).IllumRectRadius(2);
-            if origin_y-radius_y<0
-                initiation=0;
-            else
-                initiation=origin_y-radius_y;
-            end
-            t_w_illu_time(j,1)=i;
-            t_w_illu_time(j,3)=initiation;
-            t_w_illu_time(j,4)=origin_y+radius_y;
-            if i>300
-                if mod(i,100)<50
-                    t_w_illu_time(j,5)=i-mod(i,100)-2.5*100;
-                else
-                    t_w_illu_time(j,5)=i-mod(i,100)-2*100;
-                end
-            else
-                t_w_illu_time(j,5)=i;
-            end
-        end
-        if mcd(i).DLPisOn && ~mcd(i+1).DLPisOn
-            t_w_illu_time(j,2)=i;
-            if i<numframes_total-300
-                if mod(i,100)<50
-                    t_w_illu_time(j,6)=i-mod(i,100)+2.5*100;
-                else
-                    t_w_illu_time(j,6)=i-mod(i,100)+2*100;
-                end
-            else
-                t_w_illu_time(j,6)=i;
-            end
-            j=j+1;
-        end
-    end
-    
     numframes_total=size(mcd);
     numframes_total=numframes_total(2);
     
@@ -157,7 +101,6 @@ for s_yaml = start_yaml:length(yamlfiles)
         end
     end
     time_auto=cell(illu_times,1);
-    
     for cycle=1:cyclenum
         close all
         clear amp curdata curvdatafilterd angle_data
@@ -447,7 +390,7 @@ for s_yaml = start_yaml:length(yamlfiles)
         body_amp1=zeros(1,100);
         body_amp2=zeros(1,100);
         body_amp3=zeros(1,100);
-        %% calculate and plot body amplitude
+       %% calculate and plot body amplitude
         if illu_status
             for bodyseg=1:100
                 if j1==0 && j2==0
@@ -499,13 +442,10 @@ for s_yaml = start_yaml:length(yamlfiles)
                 amp_midbody{vedio_sequence,1}=body_amp;
             case ' tail'
                 amp_tail{vedio_sequence,1}=body_amp;
-        end
-        
-        %worm_data=struct('Start_frame',istart,'End_frame',iend,'Time',time,'Worm_curvature',curvdatafiltered,'center_of_illu',origin,'radius_of_illu',radius,'mean_curvature',mean_curv,'Video_name',vid);
+        end              
         t_w_curvdatafiltered{vedio_sequence,1}=curvdatafiltered;
         t_w_curdata{vedio_sequence,1}=curvdata;
         t_w_amp{vedio_sequence,1}=body_amp;
-        
         clear j1 j2
         
     end
@@ -514,6 +454,9 @@ for s_yaml = start_yaml:length(yamlfiles)
     evalc([wormname,'_curdata=t_w_curdata']);
     evalc([wormname,'_curvdatafiltered=t_w_curvdatafiltered']);
     evalc([wormname,'_illu=t_w_illu_time']);
+    worm_data=struct('name',worname,'Time',time,'curv_data',curvdata,'angle_data',angle_data,'Worm_curvature',curvdata,'Video_name',vid);
+    savename=[wormname,'.mat'];
+    save(fullfile(workpath,'data',filepath,savename),'worm_data');
     clear ans
     disp('+++++++++++++++++++');
     disp('       DONE        ');
@@ -522,4 +465,3 @@ for s_yaml = start_yaml:length(yamlfiles)
     nisi;
     clearvars -except pathname yamlfiles
 end
-toc

@@ -1,13 +1,10 @@
 tic
 %% load data
 clear,clc
-cd /home/wenlab/xrk/For_Tosif
-
-addpath lib
-addpath libwen
-addpath lib/dyncode
-addpath lib/FastICA_25
-addpath data
+%for Rongkang desktop-3070  & Laptap
+workpath=fullfile('G:','Data','WenLab','Worm_Embed');
+addpath(genpath(fullfile(workpath,'libwen')));
+addpath(genpath(fullfile(workpath,'data')));
 
 disp('Staring load data...')
 
