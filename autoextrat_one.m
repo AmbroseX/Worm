@@ -5,7 +5,7 @@ tic
 %for Rongkang desktop-3070  & Laptap
 workpath=fullfile('G:','Data','WenLab','Worm_Embed');
 addpath(genpath(fullfile(workpath,'libwen')));
-filepath='test';
+filepath='testDLP';
 pathname=fullfile(workpath,'rawdata',filepath); %the rawdata's path
 yamlfiles = dir(fullfile(pathname,'*.yaml'));
 
@@ -109,6 +109,7 @@ for s_yaml = start_yaml:length(yamlfiles)
         end
     end
     time_auto=cell(illu_times,1);
+    [cyclenum ~]=size(t_w_illu_time)
     for cycle=1:cyclenum
         close all
         clear amp curdata curvdatafilterd angle_data

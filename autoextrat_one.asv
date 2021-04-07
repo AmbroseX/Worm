@@ -5,10 +5,18 @@ tic
 %for Rongkang desktop-3070  & Laptap
 workpath=fullfile('G:','Data','WenLab','Worm_Embed');
 addpath(genpath(fullfile(workpath,'libwen')));
-filepath='test';
-
+filepath='testDLP';
 pathname=fullfile(workpath,'rawdata',filepath); %the rawdata's path
 yamlfiles = dir(fullfile(pathname,'*.yaml'));
+
+%for the 2080Ti
+% workpath=fullfile('/','home','wenlab','xrk','Worm_Embed');
+% addpath(genpath(fullfile(workpath,'libwen')));
+% filepath='test';
+% pathname=fullfile(workpath,'rawdata',filepath); %the rawdata's path
+% yamlfiles = dir(fullfile(pathname,'*.yaml'));
+%
+%
 
 
 start_yaml = input('From which file start # of *.yaml file:'); %you can input the star file number
@@ -101,6 +109,7 @@ for s_yaml = start_yaml:length(yamlfiles)
         end
     end
     time_auto=cell(illu_times,1);
+    cyc
     for cycle=1:cyclenum
         close all
         clear amp curdata curvdatafilterd angle_data
