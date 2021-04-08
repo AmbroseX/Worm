@@ -62,11 +62,11 @@ wormdata.wormname=wormname;
 wormdata.curve_data=[];
 wormdata.angle_data=[];
 
-for i=1:framnum
-   x(i)=mcd(i).FrameNumber; 
-end
-
-plot([1:framnum],x)
+%plot the frame
+% for i=1:framnum
+%    x(i)=mcd(i).FrameNumber; 
+% end
+% plot([1:framnum],x)
 
 
 
