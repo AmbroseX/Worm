@@ -1,0 +1,3 @@
+incomings = input('trail # & frame # in an array\n');
+
+wormspeed{incomings(1)}(1:incomings(2)) = -wormspeed{incomings(1)}(1:incomings(2));
