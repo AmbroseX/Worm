@@ -4,12 +4,7 @@ tic
 %to get the angle_data and curve_data one by one
 %for Rongkang desktop-3070  & Laptap
 addpath(genpath(fullfile('G:','Data','WenLab','Worm_Embed','libwen')));
-<<<<<<< Updated upstream
-pathname=fullfile('G:','Data','WenLab','Worm_Embed','rawdata','test');
-close all;
-
-=======
-pathname=fullfile('G:','Data','WenLab','Worm_Embed','rawdata');%the rawdata's path
+pathname=fullfile('G:','Data','WenLab','Worm_Embed','rawdata','testDLP');
 close all;
 
 
@@ -31,9 +26,6 @@ if exist('pathname', 'var')
 end
 
 
-[filename,pathname]  = uigetfile({'*.yaml'});
-fname = [pathname filename];
->>>>>>> Stashed changes
 
 if ~exist('mcd','var')
     mcd=Mcd_Frame;

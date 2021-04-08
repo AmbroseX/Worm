@@ -16,7 +16,6 @@ yamlfiles = dir(fullfile(pathname,'*.yaml'));
 % pathname=fullfile(workpath,'rawdata',filepath); %the rawdata's path
 % yamlfiles = dir(fullfile(pathname,'*.yaml'));
 %
-%
 
 
 start_yaml = input('From which file start # of *.yaml file:'); %you can input the star file number
