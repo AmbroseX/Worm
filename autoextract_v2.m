@@ -3,15 +3,14 @@ clc
 tic
 %This version contains the completed functions of analysing worm behavior
 %for Rongkang desktop-3070  & Laptap
-addpath(genpath('G:\Data\WenLab\Worm_Embed\libwen'))
-pathname='G:\Data\WenLab\Worm_Embed\rawdata'; %the rawdata's path
+addpath(genpath(fullfile('G:','Data','WenLab','Worm_Embed','libwen')));
+pathname=fullfile('G:','Data','WenLab','Worm_Embed','rawdata');%the rawdata's path
 % for the class,you should put all the class function under the same folder
 % and then name the folder with @ before your class function
 
-
 %for the server-2080Ti
-%addpath(genpath('/home/wenlab/xrk/Worm_Embed/libwen'))
-%pathname='/home/wenlab/xrk/Worm_Embed/rawdata'
+%addpath(genpath(fullfile('/','home','wenlab','xrk','Worm_Embed','libwen')))
+%pathname=fullfile('/','home','wenlab','xrk','Worm_Embed','rawdata')
 
 %you can also comment out the code above to use below to change your rawdata folder
 % pathname = uigetdir;

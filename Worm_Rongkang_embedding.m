@@ -1,10 +1,21 @@
 tic
 %% load data
 clear,clc
+<<<<<<< Updated upstream
 %for Rongkang desktop-3070  & Laptap
 workpath=fullfile('G:','Data','WenLab','Worm_Embed');
 addpath(genpath(fullfile(workpath,'libwen')));
 addpath(genpath(fullfile(workpath,'data')));
+=======
+%For the 2080Ti_
+cd /home/wenlab/xrk/For_Tosif
+
+addpath lib
+addpath libwen
+addpath lib/dyncode
+addpath lib/FastICA_25
+addpath data
+>>>>>>> Stashed changes
 
 disp('Staring load data...')
 

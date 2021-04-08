@@ -1,9 +1,39 @@
+tic
+%目的：将rawdata中一个文件夹下所有*.yaml文件用DLP的标记，提取出name,头尾位置，angle_data,curv_data
+%然后将其导入到data对应文件夹下面
 %to get the angle_data and curve_data one by one
-
+%for Rongkang desktop-3070  & Laptap
 addpath(genpath(fullfile('G:','Data','WenLab','Worm_Embed','libwen')));
+<<<<<<< Updated upstream
 pathname=fullfile('G:','Data','WenLab','Worm_Embed','rawdata','test');
 close all;
 
+=======
+pathname=fullfile('G:','Data','WenLab','Worm_Embed','rawdata');%the rawdata's path
+close all;
+
+
+
+%for the server-2080Ti
+%addpath(genpath(fullfile('/','home','wenlab','xrk','Worm_Embed','libwen')))
+%pathname=fullfile('/','home','wenlab','xrk','Worm_Embed','rawdata')
+%to test if the pathname existed in the workspace var.
+yamlfiles = dir(fullfile(pathname,'*.yaml'));  % get all the *.yaml file's info:name folder
+start_yaml = input('From which file start # of *.yaml file:'); %you can input the star file number
+
+
+if exist('pathname', 'var')
+    try
+        if isfolder(pathname)
+            cd(pathname);
+        end
+    end
+end
+
+
+[filename,pathname]  = uigetfile({'*.yaml'});
+fname = [pathname filename];
+>>>>>>> Stashed changes
 
 if ~exist('mcd','var')
     mcd=Mcd_Frame;
