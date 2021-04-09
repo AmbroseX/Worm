@@ -159,9 +159,7 @@ for j=1:numframes
     
     curv = unwrap(diff(atdf2,1));
     curvdata(j,:) = curv';
-    
-    
-    
+
 end
 
 %use the wormlength of the first frame as a constent, then when
