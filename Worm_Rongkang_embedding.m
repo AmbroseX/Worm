@@ -1,32 +1,31 @@
 tic
 %% load data
 clear,clc
-<<<<<<< Updated upstream
 %for Rongkang desktop-3070  & Laptap
+filepath='testDLP';
+
 workpath=fullfile('G:','Data','WenLab','Worm_Embed');
 addpath(genpath(fullfile(workpath,'libwen')));
-addpath(genpath(fullfile(workpath,'data')));
-=======
-%For the 2080Ti_
-cd /home/wenlab/xrk/For_Tosif
+addpath(genpath(fullfile(workpath,'data',filepath)));
 
-addpath lib
-addpath libwen
-addpath lib/dyncode
-addpath lib/FastICA_25
-addpath data
->>>>>>> Stashed changes
+%For the 2080Ti
 
 disp('Staring load data...')
 
-load('crawl.mat') % 1*12 cell ,33600*5 double
-load('EigenWorms.mat') %100*100 double
-load('curvdatafiltered_w4_2_23992.mat') %239991*100 double
-load('angle_data_w4_2_26596.mat') %26595*101 double
-wormName = 'w4_2_23992';   %to create folder to keep .jpg
-mkdir(wormName)
+load('20210403_2042_w3.mat') % 1*12 cell ,33600*5 double
+wormName = wormdata.wormname;   %to create folder to keep .jpg
+savefolder=fullfile(workpath,'prodata',filepath,wormName);
+if exist(savefolder)==0
+    disp('dir is not exist');
+    mkdir(savefolder);
+    disp('make dir success');
+else
+    disp('dir is exist');
+end
 
 %% Our data: preparation
+angle_data=wormdata.angle_data;
+
 ts=16; %sampling rate
 rtheta_s = angle_data(:,2:end); %去掉第一列 得100列维度
 mean_X = mean(rtheta_s, 1); %整列做平均
@@ -36,7 +35,7 @@ X_shifted = rtheta_s - repmat(mean_X, T_sample, 1); %将rtheta_s减去均值，�
 K_mode = 5; %
 r = 4; %ratio of folding
 T = ceil(T_sample / r); %downsampled data points
-L = size(rtheta_s, 2); %number of segments 多少列
+L = size(rtheta_s, 2); %number of segments 
 X_downsampled = zeros(T, L);
 
 for i = 1:L

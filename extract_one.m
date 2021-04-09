@@ -4,12 +4,11 @@ filepath='testDLP';
 pathname=fullfile(workpath,'rawdata',filepath); %the rawdata's path
 yamlfiles = dir(fullfile(pathname,'*.yaml'));
 
-
 % start_yaml = input('From which file start # of *.yaml file:'); %you can input the star file number
 % if isempty(start_yaml)  %if the input is empty then start from the first file
 %     start_yaml = 1;
 % end
-s_yaml=3;
+s_yaml=1;
 
 filename = yamlfiles(s_yaml).name;
 fname=fullfile(pathname,filename);   % the full pathe of the *.yaml
@@ -18,11 +17,8 @@ timepattern = '\d*_\d\d\d\d_';
 shortname = regexp(filename,namepattern,'match');
 wormname = shortname{1}(1:end-5);
 
-
-
 mcd = Mcd_Frame;
 mcd = mcd.yaml2matlab(fname);    % a=mcd(x)
-
 
 frames_afterDLPon =300;
 numcurvpts = 100;
@@ -60,7 +56,6 @@ clear mcd2
 %    x(i)=mcd(i).FrameNumber; 
 % end
 % plot([1:framnum],x)
-
 
 %cal curve,angle
 wormdata.name=yamlfiles(s_yaml).name;
@@ -118,17 +113,18 @@ for i=1:framnum
     
 end
 
-
-
 clearvars -except wormdata workpath filepath filename yamlfiles
 savename=strrep(filename,'.yaml','.mat');
 savefolder=fullfile(workpath,'data',filepath);
 if exist(savefolder)==0
+    disp('dir is not exist');
     mkdir(savefolder);
+    disp('make dir success');
 else
     disp('dir is exist');
 end
 save(fullfile(savefolder,savename),'wormdata')
+disp('Save file success')
 
 
 
