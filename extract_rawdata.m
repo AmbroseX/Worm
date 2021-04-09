@@ -3,7 +3,13 @@ tic
 %然后将其导入到data对应文件夹下面
 filepath='testDLP';
 
+
+%for Rongkang desktop-3070  & Laptap
 workpath=fullfile('G:','Data','WenLab','Worm_Embed');
+
+%For the 2080Ti
+% workpath=fullfile('/','home','wenLab','xrk','Worm_Embed');
+
 addpath(genpath(fullfile(workpath,'libwen')));
 pathname=fullfile(workpath,'rawdata',filepath); %the rawdata's path
 yamlfiles = dir(fullfile(pathname,'*.yaml'));
