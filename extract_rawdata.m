@@ -124,7 +124,7 @@ for s_yaml=1:length(yamlfiles)
         
     end
     
-    clearvars -except wormdata workpath filepath filename yamlfiles
+    clearvars -except wormdata workpath pathname filepath filename yamlfiles
     savename=strrep(filename,'.yaml','.mat');
     savefolder=fullfile(workpath,'data',filepath);
     if exist(savefolder)==0

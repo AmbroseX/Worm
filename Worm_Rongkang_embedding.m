@@ -94,7 +94,7 @@ errorbar(delrange, tpred_k(:, 1), tpred_k(:, 1) - tpred_k(:, 2), tpred_k(:, 3) -
 xlabel('K')
 ylabel('T_{pred}')
 hold off
-saveas(gcf, fullfile(savefolder,wormName,Tpred(K).jpg'))
+saveas(gcf, fullfile(savefolder,wormName,'Tpred(K).jpg'))
 
 [pks,locs] = findpeaks(tpred_k(:,1));
 Kstar=pks(locs(end));  % K越大越好
