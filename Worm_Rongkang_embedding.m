@@ -94,11 +94,11 @@ errorbar(delrange, tpred_k(:, 1), tpred_k(:, 1) - tpred_k(:, 2), tpred_k(:, 3) -
 xlabel('K')
 ylabel('T_{pred}')
 hold off
-saveas(gcf, fullfile(savefolder,wormName,'Tpred(K).jpg'))
+saveas(gcf, fullfile(savefolder,'Tpred(K).jpg'))
 
 [pks,locs] = findpeaks(tpred_k(:,1));
-Kstar=pks(locs(end));  % K越大越好
-disp('Best K is:',Kstar);
+Kstar=locs(end);  % K越大越好
+disp(['Best K is:',num2str(Kstar)]);
 
 %% Use SVD to optimize m
 %set the value of Kstar as determined from Tpred(K) above
@@ -121,7 +121,8 @@ errorbar(1:mmax, tpred_m(:, 1), tpred_m(:, 1) - tpred_m(:, 2), tpred_m(:, 3) - t
 xlabel('m')
 ylabel('T_{pred}')
 hold off
-saveas(gcf, fullfile(savefolder,wormName,'Tpred(m).jpg'));
+
+saveas(gcf, fullfile(savefolder,'Tpred(m).jpg'));
 
 mStar = 7;  % to set best embedding dimension
 
@@ -181,13 +182,13 @@ subplot(1, 2, 2); plot(icasig(end - len:end, 6), icasig(end - len:end, 7));
 xlabel('ICA_6')
 ylabel('ICA_7')
 hold off
-saveas(gcf,fullfile(savefolder,wormName,'ICA_phase_2D_by_Tosif.jpg'))
+saveas(gcf,fullfile(savefolder,'ICA_phase_2D_by_Tosif.jpg'))
 
 figure
 hold on
 plot3(icasig(end - len:end, 1), icasig(end - len:end, 4), icasig(end - len:end, 5));
 hold off
-saveas(gcf,[wormName,'/','ICA_phase_3D_by_Tosif.jpg'])
+saveas(gcf,fullfile(savefolder,'/','ICA_phase_3D_by_Tosif.jpg'))
 
 %% ICA by our method:Centered and whitened
 %mu = mean(X',2);
@@ -222,7 +223,7 @@ subplot(1, 2, 2); plot(Zica(6, end - len:end), Zica(7, end - len:end));
 xlabel('Z_6')
 ylabel('Z_7')
 hold off
-saveas(gcf, fullfile(savefolder,wormName,'ICA_phase_2D_by_WenLab.jpg'))
+saveas(gcf, fullfile(savefolder,'ICA_phase_2D_by_WenLab.jpg'))
 
 figure
 hold on
@@ -231,7 +232,7 @@ xlabel('Z_4')
 ylabel('Z_3')
 zlabel('Z_1')
 hold off
-saveas(gcf,fullfile(savefolder,wormName,'ICA_phase_3D_by_WenLab.jpg'))
+saveas(gcf,fullfile(savefolder,'ICA_phase_3D_by_WenLab.jpg'))
 %animation3(X(startf:endf,1),X(startf:endf,2),X(startf:endf,3),1);
 %figure; animation3(Zcw(1,startf:endf),Zcw(2,startf:endf),Zcw(3,startf:endf),1);
 %figure; animation3(Zica(1,startf:endf),Zica(2,startf:endf),Zica(3,startf:endf),1);
