@@ -231,21 +231,23 @@ toc
 figure
 hold on
 plot(Jac_data.lexp_avg*ts)
-xlabel('Jac-data')
-ylabel('lexp*ts')
+xlable('Jac_data')
+ylable('')
+
+
 hold off
-saveas(gcf, fullfile(savefolder,'Jacobians.jpg'))
 
 
-% % Ger periodic orbits and plot all orbits of period 1
-% [pertab,pers]=perorb_find_adapt(XX');
-% figure
-% hold on
-% clf;tpper=pertab(pertab(:,6)==1,:);
-% plot_clusters_traj(XX,tpper,[3 4 2;6 7 2;1 2 5],ones(12,1),[1 1 1]*0.2)
-% xlabel('')
-% ylabel('')
-% 
-% hold off
+
+% Ger periodic orbits and plot all orbits of period 1
+[pertab,pers]=perorb_find_adapt(XX');
+figure
+hold on
+clf;tpper=pertab(pertab(:,6)==1,:);
+plot_clusters_traj(XX,tpper,[3 4 2;6 7 2;1 2 5],ones(12,1),[1 1 1]*0.2)
+xlabel('')
+ylabel('')
+
+hold off
 
 
