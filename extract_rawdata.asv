@@ -3,23 +3,24 @@ tic
 %然后将其导入到data对应文件夹下面
 filepathname={'control','experiment','testDLP'};
 
+
 %for Rongkang desktop-3070  & Laptap
 workpath=fullfile('G:','Data','WenLab','Worm_Embed');
+
 %For the 2080Ti
 % workpath=fullfile('/','home','wenLab','xrk','Worm_Embed');
 
 addpath(genpath(fullfile(workpath,'libwen')));
-
+pathname=fullfile(workpath,'rawdata',filepath); %the rawdata's path
+yamlfiles = dir(fullfile(pathname,'*.yaml'));
 for filepath_num=1:length(filepathname)
-    filepath=filepathname{filepath_num};
-    pathname=fullfile(workpath,'rawdata',filepath); %the rawdata's path
-    yamlfiles = dir(fullfile(pathname,'*.yaml'));
+    filepath=filepathname
     if length(yamlfiles)==0
-        disp(strcat(filepath,' folder has no *.yaml'))
         continue;
     end
-    disp(strcat('Begain to process:',filepath));
+    
     for s_yaml=1:length(yamlfiles)
+        
         
         filename = yamlfiles(s_yaml).name;
         fname=fullfile(pathname,filename);   % the full pathe of the *.yaml
