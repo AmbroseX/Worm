@@ -58,7 +58,8 @@ for filepath_num=1:length(filepathname)
             end
         end
         
-        mcd=mcd2;framnum=length(mcd);
+        mcd=mcd2;
+        framnum=length(mcd);
         
         clear mcd2
         
