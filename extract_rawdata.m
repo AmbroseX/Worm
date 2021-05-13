@@ -105,8 +105,8 @@ for filepath_num=1:length(filepathname)
             wormdata.Centerline(i,:,2)=centerline(2,:);
             wormdata.time(i)=mcd(i).TimeElapsed;
             
-            df = diff(centerline,1,2);
-            t = cumsum([0, sqrt([1 1]*(df.*df))]);%here [0,[1:100]] adds one column by the head, thus the matrix becomes [0:101]
+            df = diff(centerline,1,2); %列差分计算，相邻点做差分
+            t = cumsum([0, sqrt([1 1]*(df.*df))]);%求矩阵或向量的累积和，here [0,[1:100]] adds one column by the head, thus the matrix becomes [0:101]
             worm_length=worm_length+t(end);
             cv = csaps(t,centerline,spline_p);
             
@@ -128,6 +128,7 @@ for filepath_num=1:length(filepathname)
         clearvars -except wormdata workpath pathname filepath filename yamlfiles
         savename=strrep(filename,'.yaml','.mat');
         savefolder=fullfile(workpath,'data',filepath);
+        
         if exist(savefolder)==0
             disp('dir is not exist');
             mkdir(savefolder);
