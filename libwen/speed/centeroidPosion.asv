@@ -1,0 +1,11 @@
+function y=centeroidPosion(A)
+time=A.TimeElapsed;
+X=A.Centerline(:,:,1);
+Y=A.Centerline(:,:,2);
+
+Xc=mean(X,2);
+Yc=mean(Y,2);
+numfram=length(Xc);
+center=zeros(
+
+end
