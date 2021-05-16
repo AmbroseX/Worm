@@ -1,7 +1,7 @@
 tic
 %目的：将rawdata中一个文件夹下所有*.yaml文件用DLP的标记，提取出name,头尾位置，angle_data,curv_data
 %然后将其导入到data对应文件夹下面
-filepathname={'N2','silence','testDLP'};
+filepathname={'silence','testDLP'};
 
 %for Rongkang desktop-3070  & Laptap
 workpath=fullfile('G:','Data','WenLab','Worm_Embed');
@@ -129,7 +129,7 @@ for filepath_num=1:length(filepathname)
             
         end
         
-        clearvars -except wormdata workpath pathname filepath filename yamlfiles
+        clearvars -except wormdata workpath pathname filepathname filepath filename yamlfiles
         savename=strrep(filename,'.yaml','.mat');
         savefolder=fullfile(workpath,'data',filepath);
         
