@@ -76,7 +76,7 @@ for filepath_num=1:length(filepathname)
         wormdata.angle_data=zeros(framnum,numcurvpts+1);
         wormdata.TimeElapsed=zeros(framnum,1);
         wormdata.Centerline=zeros(framnum,100,2);
-        wormdata.StagePosion=zeros(framnum,2);
+        wormdata.StagePosition=zeros(framnum,2);
         wormdata.StageFeedbackTarget=zeros(framnum,2);
         Head_position=mcd(1).Head;
         Tail_position=mcd(1).Tail;
@@ -106,7 +106,7 @@ for filepath_num=1:length(filepathname)
             wormdata.Centerline(i,:,1)=centerline(1,:);
             wormdata.Centerline(i,:,2)=centerline(2,:);
             wormdata.TimeElapsed(i)=mcd(i).TimeElapsed;
-            wormdata.StagePosion(i,:)=mcd(i).StagePosition;
+            wormdata.StagePosition(i,:)=mcd(i).StagePosition;
             wormdata.StageFeedbackTarget(i,:)=mcd(i).StageFeedbackTarget;
             
             df = diff(centerline,1,2); %列差分计算，相邻点做差分
