@@ -1,4 +1,4 @@
-function relativePosion=wormrelativePosion(A)
+function relativePosion=wormrelativePosition(A)
 %算质心速度speed随时间变化的数据
 %A is wormdata
 micronperunit = 0.05;  %每个单位位移代表的长度 mm

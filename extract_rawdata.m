@@ -142,7 +142,7 @@ for filepath_num=1:length(filepathname)
         end
         
         %calculate the relative speed
-        position=wormrelativePosion(wormdata);
+        position=wormrelativePosition(wormdata);
         wormdata.speed=wormSpeed(position); % 三列time,Vx,Vy  mm/s
         
         save(fullfile(savefolder,savename),'wormdata')
